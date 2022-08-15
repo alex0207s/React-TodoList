@@ -2,27 +2,44 @@ import { useState } from 'react';
 import './App.css';
 
 function Items(props) {
-  const { content, finished } = props;
+  const { todo, setTodo } = props;
 
-  return (
+  return todo.map((todo_item, i) => (
     <li>
       <label class="todoList_label">
         <input class="todoList_input" type="checkbox" value="true" />
-        <span>{content}</span>
+        <span>{todo_item.content}</span>
       </label>
       <a href="#">
-        <i class="fa fa-times" onClick={() => console.log('test')}></i>
+        <i
+          class="fa fa-times"
+          onClick={() => {
+            console.log(todo_item.content);
+            setTodo(
+              [...todo].filter((item) => item.content !== todo_item.content)
+            );
+          }}
+        ></i>
       </a>
     </li>
-  );
+  ));
 }
 
 function InputBox(props) {
+  const { todo, setTodo } = props;
+  const [newTodo, setNewTodo] = useState({ content: '', finished: false });
+
   return (
     <div class="inputBox">
-      <input type="text" placeholder="請輸入待辦事項" />
+      <input
+        type="text"
+        placeholder="請輸入待辦事項"
+        onChange={(e) => {
+          setNewTodo({ content: e.target.value, finished: false });
+        }}
+      />
       <a href="#">
-        <i class="fa fa-plus"></i>
+        <i class="fa fa-plus" onClick={() => setTodo([...todo, newTodo])}></i>
       </a>
     </div>
   );
@@ -65,13 +82,7 @@ function App() {
       </nav>
       <div class="container todoListPage vhContainer">
         <div class="todoList_Content">
-          {/* <div class="inputBox">
-            <input type="text" placeholder="請輸入待辦事項" />
-            <a href="#">
-              <i class="fa fa-plus"></i>
-            </a>
-          </div> */}
-          <InputBox />
+          <InputBox todo={todo} setTodo={setTodo} />
           <div class="todoList_list">
             <ul class="todoList_tab">
               <li>
@@ -88,9 +99,7 @@ function App() {
             </ul>
             <div class="todoList_items">
               <ul class="todoList_item">
-                {todo.map((item, i) => (
-                  <Items key={i} content={item.content} />
-                ))}
+                <Items todo={todo} setTodo={setTodo} />
               </ul>
               <div class="todoList_statistics">
                 <p>{todo.length} 個已完成項目</p>
