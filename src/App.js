@@ -11,9 +11,20 @@ function Items(props) {
         <span>{content}</span>
       </label>
       <a href="#">
-        <i class="fa fa-times"></i>
+        <i class="fa fa-times" onClick={() => console.log('test')}></i>
       </a>
     </li>
+  );
+}
+
+function InputBox(props) {
+  return (
+    <div class="inputBox">
+      <input type="text" placeholder="請輸入待辦事項" />
+      <a href="#">
+        <i class="fa fa-plus"></i>
+      </a>
+    </div>
   );
 }
 
@@ -54,12 +65,13 @@ function App() {
       </nav>
       <div class="container todoListPage vhContainer">
         <div class="todoList_Content">
-          <div class="inputBox">
+          {/* <div class="inputBox">
             <input type="text" placeholder="請輸入待辦事項" />
             <a href="#">
               <i class="fa fa-plus"></i>
             </a>
-          </div>
+          </div> */}
+          <InputBox />
           <div class="todoList_list">
             <ul class="todoList_tab">
               <li>
@@ -76,12 +88,12 @@ function App() {
             </ul>
             <div class="todoList_items">
               <ul class="todoList_item">
-                {todo.map((item, i) => {
-                  return <Items key={i} content={item.content} />;
-                })}
+                {todo.map((item, i) => (
+                  <Items key={i} content={item.content} />
+                ))}
               </ul>
               <div class="todoList_statistics">
-                <p>5 個已完成項目</p>
+                <p>{todo.length} 個已完成項目</p>
                 <a href="#">清除已完成項目</a>
               </div>
             </div>
