@@ -517,10 +517,12 @@ nav ul a span {
 }
 
 .todoList_list .todoList_items {
+  height: 70vh;
   padding-top: 23px;
   padding-left: 24px;
   padding-right: 17px;
   padding-bottom: 32px;
+  overflow: auto;
 }
 
 .todoList_list .todoList_items .todoList_item {
