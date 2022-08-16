@@ -4,10 +4,27 @@ import './App.css';
 function Items(props) {
   const { todo, setTodo } = props;
 
+  const setFinished = (content) => {
+    const targetIndex = todo.findIndex((x) => x.content == content);
+
+    const todo2 = [...todo];
+    todo2[targetIndex].finished = !todo2[targetIndex].finished;
+
+    setTodo(todo2);
+  };
+
   return todo.map((todo_item, i) => (
-    <li>
+    <li key={i}>
       <label class="todoList_label">
-        <input class="todoList_input" type="checkbox" value="true" />
+        <input
+          class="todoList_input"
+          type="checkbox"
+          checked={todo_item.finished}
+          onClick={(e) => {
+            setFinished(todo_item.content);
+            console.log(e.target.value);
+          }}
+        />
         <span>{todo_item.content}</span>
       </label>
       <a href="#">
@@ -73,6 +90,11 @@ function App() {
     },
   ]);
 
+  const clearFinishedItem = () => {
+    setTodo([...todo].filter((item) => item.finished === false));
+    // setTodo([...todo].slice(1));
+  };
+
   return (
     <div id="todoListPage" class="bg-half">
       <nav>
@@ -103,7 +125,16 @@ function App() {
               </ul>
               <div class="todoList_statistics">
                 <p>{todo.length} 個已完成項目</p>
-                <a href="#">清除已完成項目</a>
+                <a
+                  href="#"
+                  type="button"
+                  onClick={() => {
+                    clearFinishedItem();
+                    console.log(todo);
+                  }}
+                >
+                  清除已完成項目
+                </a>
               </div>
             </div>
           </div>
