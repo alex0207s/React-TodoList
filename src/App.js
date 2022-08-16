@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 
 function Items(props) {
-  const { todo, setTodo } = props;
+  const { todo, setTodo, activeTab } = props;
 
   const setFinished = (content) => {
     const targetIndex = todo.findIndex((x) => x.content == content);
@@ -13,7 +13,17 @@ function Items(props) {
     setTodo(todo2);
   };
 
-  return todo.map((todo_item, i) => (
+  let showTodo = [];
+
+  if (activeTab === '全部') {
+    showTodo = [...todo];
+  } else if (activeTab === '待完成') {
+    showTodo = [...todo].filter((item) => item.finished === false);
+  } else if (activeTab === '已完成') {
+    showTodo = [...todo].filter((item) => item.finished === true);
+  }
+
+  return showTodo.map((todo_item, i) => (
     <li key={i}>
       <label className="todoList_label">
         <input
@@ -147,10 +157,13 @@ function App() {
             </ul>
             <div className="todoList_items">
               <ul className="todoList_item">
-                <Items todo={todo} setTodo={setTodo} />
+                <Items todo={todo} setTodo={setTodo} activeTab={activeTab} />
               </ul>
               <div className="todoList_statistics">
-                <p>{todo.length} 個已完成項目</p>
+                <p>
+                  {[...todo].filter((item) => item.finished === true).length}{' '}
+                  個已完成項目
+                </p>
                 <a
                   href="#"
                   type="button"
