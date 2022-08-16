@@ -15,9 +15,9 @@ function Items(props) {
 
   return todo.map((todo_item, i) => (
     <li key={i}>
-      <label class="todoList_label">
+      <label className="todoList_label">
         <input
-          class="todoList_input"
+          className="todoList_input"
           type="checkbox"
           checked={todo_item.finished}
           onClick={(e) => {
@@ -29,7 +29,7 @@ function Items(props) {
       </label>
       <a href="#">
         <i
-          class="fa fa-times"
+          className="fa fa-times"
           onClick={() => {
             console.log(todo_item.content);
             setTodo(
@@ -47,7 +47,7 @@ function InputBox(props) {
   const [newTodo, setNewTodo] = useState({ content: '', finished: false });
 
   return (
-    <div class="inputBox">
+    <div className="inputBox">
       <input
         type="text"
         placeholder="請輸入待辦事項"
@@ -56,9 +56,31 @@ function InputBox(props) {
         }}
       />
       <a href="#">
-        <i class="fa fa-plus" onClick={() => setTodo([...todo, newTodo])}></i>
+        <i
+          className="fa fa-plus"
+          onClick={() => setTodo([...todo, newTodo])}
+        ></i>
       </a>
     </div>
+  );
+}
+
+function TodoListTab(props) {
+  const { tabName, activeTab, setActiveTab } = props;
+
+  return (
+    <li>
+      <a
+        href="#"
+        type="button"
+        className={tabName === activeTab ? 'active' : ''}
+        onClick={() => {
+          setActiveTab(tabName);
+        }}
+      >
+        {tabName}
+      </a>
+    </li>
   );
 }
 
@@ -90,47 +112,45 @@ function App() {
     },
   ]);
 
+  const [activeTab, setActiveTab] = useState('全部');
+
   const clearFinishedItem = () => {
     setTodo([...todo].filter((item) => item.finished === false));
-    // setTodo([...todo].slice(1));
   };
 
   return (
-    <div id="todoListPage" class="bg-half">
+    <div id="todoListPage" className="bg-half">
       <nav>
         <h1>
           <a href="#">ONLINE TODO LIST</a>
         </h1>
       </nav>
-      <div class="container todoListPage vhContainer">
-        <div class="todoList_Content">
+      <div className="container todoListPage vhContainer">
+        <div className="todoList_Content">
           <InputBox todo={todo} setTodo={setTodo} />
-          <div class="todoList_list">
-            <ul class="todoList_tab">
-              <li>
-                <a href="#" class="active">
-                  全部
-                </a>
-              </li>
-              <li>
-                <a href="#">待完成</a>
-              </li>
-              <li>
-                <a href="#">已完成</a>
-              </li>
+          <div className="todoList_list">
+            <ul className="todoList_tab">
+              {['全部', '待完成', '已完成'].map((item, i) => {
+                return (
+                  <TodoListTab
+                    tabName={item}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                  />
+                );
+              })}
             </ul>
-            <div class="todoList_items">
-              <ul class="todoList_item">
+            <div className="todoList_items">
+              <ul className="todoList_item">
                 <Items todo={todo} setTodo={setTodo} />
               </ul>
-              <div class="todoList_statistics">
+              <div className="todoList_statistics">
                 <p>{todo.length} 個已完成項目</p>
                 <a
                   href="#"
                   type="button"
                   onClick={() => {
                     clearFinishedItem();
-                    console.log(todo);
                   }}
                 >
                   清除已完成項目
