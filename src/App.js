@@ -46,20 +46,25 @@ function InputBox(props) {
   const { todo, setTodo } = props;
   const [newTodo, setNewTodo] = useState({ content: '', finished: false });
 
+  const addTodo = () => {
+    if (newTodo.content == '') alert('請輸入待辦事項!');
+
+    setTodo([...todo, newTodo]);
+    setNewTodo({ content: '', finished: false });
+  };
+
   return (
     <div className="inputBox">
       <input
         type="text"
         placeholder="請輸入待辦事項"
+        value={newTodo.content}
         onChange={(e) => {
           setNewTodo({ content: e.target.value, finished: false });
         }}
       />
       <a href="#">
-        <i
-          className="fa fa-plus"
-          onClick={() => setTodo([...todo, newTodo])}
-        ></i>
+        <i className="fa fa-plus" onClick={addTodo}></i>
       </a>
     </div>
   );
