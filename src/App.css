@@ -103,10 +103,6 @@ section {
   display: block;
 }
 
-body {
-  line-height: 1;
-}
-
 ol,
 ul {
   list-style: none;
@@ -153,6 +149,7 @@ html {
 }
 
 body {
+  line-height: 1;
   font-family: 'Noto Sans TC';
   margin: 0 auto;
   overflow: hidden;
@@ -517,7 +514,8 @@ nav ul a span {
 }
 
 .todoList_list .todoList_items {
-  height: 70vh;
+  height: auto;
+  max-height: 70vh;
   padding-top: 23px;
   padding-left: 24px;
   padding-right: 17px;
