@@ -34,7 +34,8 @@ function Items(props) {
         <input
           className="todoList_input"
           type="checkbox"
-          onClick={() => {
+          checked={todo_item.finished}
+          onChange={() => {
             setFinished(todo_item.id);
           }}
         />
@@ -75,21 +76,27 @@ function InputBox(props) {
 }
 
 function TodoListTab(props) {
-  const { tabName, activeTab, setActiveTab } = props;
+  const { activeTab, setActiveTab } = props;
 
   return (
-    <li>
-      <a
-        href="#"
-        type="button"
-        className={tabName === activeTab ? 'active' : ''}
-        onClick={() => {
-          setActiveTab(tabName);
-        }}
-      >
-        {tabName}
-      </a>
-    </li>
+    <ul className="todoList_tab">
+      {['全部', '待完成', '已完成'].map((item, i) => {
+        return (
+          <li key={i}>
+            <a
+              href="#"
+              type="button"
+              className={item === activeTab ? 'active' : ''}
+              onClick={() => {
+                setActiveTab(item);
+              }}
+            >
+              {item}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -144,24 +151,14 @@ function App() {
         <div className="todoList_Content">
           <InputBox todo={todo} setTodo={setTodo} />
           <div className="todoList_list">
-            <ul className="todoList_tab">
-              {['全部', '待完成', '已完成'].map((item, i) => {
-                return (
-                  <TodoListTab
-                    tabName={item}
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                  />
-                );
-              })}
-            </ul>
+            <TodoListTab activeTab={activeTab} setActiveTab={setActiveTab} />
             <div className="todoList_items">
               <ul className="todoList_item">
                 <Items todo={todo} setTodo={setTodo} activeTab={activeTab} />
               </ul>
               <div className="todoList_statistics">
                 <p>
-                  {[...todo].filter((item) => item.finished === true).length}{' '}
+                  {todo.filter((item) => item.finished === true).length}{' '}
                   個已完成項目
                 </p>
                 <a
