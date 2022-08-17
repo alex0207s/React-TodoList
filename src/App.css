@@ -79,7 +79,8 @@ summary,
 time,
 mark,
 audio,
-video {
+video,
+button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -461,7 +462,7 @@ nav ul a span {
   padding-left: 16px;
 }
 
-.inputBox a {
+.inputBox button {
   display: block;
   width: 40px;
   height: 39px;
@@ -515,7 +516,7 @@ nav ul a span {
 
 .todoList_list .todoList_items {
   height: auto;
-  max-height: 70vh;
+  max-height: 60vh;
   padding-top: 23px;
   padding-left: 24px;
   padding-right: 17px;
