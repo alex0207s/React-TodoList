@@ -57,7 +57,10 @@ function InputBox(props) {
   const [newTodo, setNewTodo] = useState({ content: '', finished: false });
 
   const addTodo = () => {
-    if (newTodo.content == '') alert('請輸入待辦事項!');
+    if (newTodo.content == '') {
+      alert('請輸入待辦事項!');
+      return;
+    }
 
     setTodo([...todo, newTodo]);
     setNewTodo({ content: '', finished: false });
