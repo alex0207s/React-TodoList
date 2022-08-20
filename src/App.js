@@ -111,7 +111,7 @@ function TodoListTab({ activeTab, setActiveTab }) {
   );
 }
 
-function TodoListStatistics({ length, text, setData }) {
+function TodoListStatistics({ statisticsNumber, setData }) {
   function clearFinishedItem() {
     setData(function (prev) {
       return prev.filter((item) => item.finished === false);
@@ -120,9 +120,7 @@ function TodoListStatistics({ length, text, setData }) {
 
   return (
     <div className="todoList_statistics">
-      <p>
-        {length} 個{text}項目
-      </p>
+      <p>{statisticsNumber} 個待完成項目</p>
       <a href="#" type="button" onClick={clearFinishedItem}>
         清除已完成項目
       </a>
@@ -143,28 +141,26 @@ function List({ data, setData }) {
 
   function switchTab() {
     if (activeTab === '全部') {
-      const statisticsNumber = data.filter(
-        (item) => item.finished === true
-      ).length;
-      return [data, statisticsNumber, '已完成'];
+      return data;
     } else if (activeTab === '待完成') {
       const showData = data.filter((item) => item.finished === false);
-      return [showData, showData.length, '待完成'];
+      return showData;
     } else if (activeTab === '已完成') {
       const showData = data.filter((item) => item.finished === true);
-      return [showData, showData.length, '已完成'];
+      return showData;
     }
   }
 
-  const [showData, statisticsNumber, text] = switchTab(activeTab);
+  const showData = switchTab(activeTab);
 
   return (
     <div className="todoList_list">
       <TodoListTab activeTab={activeTab} setActiveTab={setActiveTab} />
       <TodoListItems data={showData} setData={setData} />
       <TodoListStatistics
-        length={statisticsNumber}
-        text={text}
+        statisticsNumber={
+          showData.filter((item) => item.finished === false).length
+        }
         setData={setData}
       />
     </div>
