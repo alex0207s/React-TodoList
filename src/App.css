@@ -509,8 +509,8 @@ nav ul a span {
 }
 
 .todoList_list .todoList_items {
-  height: 50vh;
-  max-height: 60vh;
+  height: auto;
+  max-height: 50vh;
   padding-top: 23px;
   padding-left: 24px;
   padding-right: 17px;
