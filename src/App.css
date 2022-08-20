@@ -494,7 +494,7 @@ nav ul a span {
   justify-content: space-evenly;
 }
 
-.todoList_list .todoList_tab li {
+.todoList_list .todoList_tab div {
   width: 100%;
 }
 
@@ -520,7 +520,7 @@ nav ul a span {
   padding-top: 23px;
   padding-left: 24px;
   padding-right: 17px;
-  padding-bottom: 32px;
+  /* padding-bottom: 32px; */
   overflow: auto;
 }
 
@@ -557,7 +557,7 @@ nav ul a span {
   transition: all 0.4s ease-in-out;
 }
 
-.todoList_list .todoList_items li {
+.todoList_list .todoList_items .todoList_item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -567,7 +567,7 @@ nav ul a span {
   margin-bottom: 17px;
 }
 
-.todoList_list .todoList_items li a {
+.todoList_list .todoList_items .todoList_item a {
   margin-left: 17px;
   display: block;
   font-size: 14px;
@@ -575,11 +575,19 @@ nav ul a span {
   opacity: 0;
 }
 
-.todoList_list .todoList_items li:hover a {
+.todoList_list .todoList_items .todoList_item:hover a {
   opacity: 1;
 }
 
 .todoList_list .todoList_statistics {
+  height: auto;
+  max-height: 60vh;
+  padding-top: 15px;
+  padding-left: 24px;
+  padding-right: 17px;
+  padding-bottom: 32px;
+  overflow: auto;
+
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

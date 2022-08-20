@@ -2,106 +2,177 @@ import { useState } from 'react';
 import { v4 } from 'uuid';
 import './App.css';
 
-function Items(props) {
-  const { todo, setTodo, activeTab } = props;
+function Item({ id, content, finished, setData }) {
+  function setFinished() {
+    setData(function (prev) {
+      const targetIndex = prev.findIndex((x) => x.id == id);
 
-  const setFinished = (id) => {
-    const targetIndex = todo.findIndex((x) => x.id == id);
+      const updateTodo = [...prev];
+      updateTodo[targetIndex].finished = !updateTodo[targetIndex].finished;
 
-    const updateTodo = [...todo];
-    updateTodo[targetIndex].finished = !updateTodo[targetIndex].finished;
-
-    setTodo(updateTodo);
-  };
-
-  const removeTodoItem = (id) => {
-    setTodo(todo.filter((item) => item.id != id));
-  };
-
-  let showTodo = [];
-
-  if (activeTab === '全部') {
-    showTodo = [...todo];
-  } else if (activeTab === '待完成') {
-    showTodo = [...todo].filter((item) => item.finished === false);
-  } else if (activeTab === '已完成') {
-    showTodo = [...todo].filter((item) => item.finished === true);
+      return updateTodo;
+    });
   }
 
-  return showTodo.map((todo_item) => (
-    <li key={todo_item.id}>
+  function deleteItem() {
+    // submittingStatus.current = true
+    setData(function (prev) {
+      return prev.filter((item) => item.id !== id);
+    });
+  }
+
+  return (
+    <div className="todoList_item">
       <label className="todoList_label">
         <input
           className="todoList_input"
           type="checkbox"
-          checked={todo_item.finished}
-          onChange={() => {
-            setFinished(todo_item.id);
-          }}
+          checked={finished}
+          onChange={setFinished}
         />
-        <span>{todo_item.content}</span>
+        <span>{content}</span>
       </label>
-      <a href="#" onClick={() => removeTodoItem(todo_item.id)}>
+      <a href="#" onClick={deleteItem}>
         <i className="fa fa-times"></i>
       </a>
-    </li>
-  ));
+    </div>
+  );
 }
 
-function InputBox(props) {
-  const { todo, setTodo } = props;
+function TodoListItems({ data, setData }) {
+  return (
+    <div className="todoList_items">
+      {data.map((item) => (
+        <Item
+          key={item.id}
+          id={item.id}
+          content={item.content}
+          finished={item.finished}
+          setData={setData}
+        />
+      ))}
+    </div>
+  );
+}
 
-  const addTodo = (e) => {
-    if (e.target.input.value == '') {
+function InputBox({ setData }) {
+  const [todo, setTodo] = useState('');
+
+  const addTodo = () => {
+    if (todo === '') {
       alert('請輸入待辦事項!');
       return;
     }
 
-    setTodo([
-      ...todo,
-      { id: v4(), content: e.target.input.value, finished: false },
-    ]);
+    setData(function (prev) {
+      return [...prev, { id: v4(), content: todo, finished: false }];
+    });
 
-    e.target.input.value = '';
+    setTodo(() => {
+      return '';
+    });
   };
 
   return (
-    <form className="inputBox" onSubmit={addTodo}>
-      <input name="input" type="text" placeholder="請輸入待辦事項" />
-      <button type="submit">
+    <div className="inputBox">
+      <input
+        type="text"
+        placeholder="請輸入待辦事項"
+        value={todo}
+        onChange={(e) => setTodo(e.target.value)}
+      />
+      <button onClick={addTodo}>
         <i className="fa fa-plus"></i>
       </button>
-    </form>
+    </div>
   );
 }
 
-function TodoListTab(props) {
-  const { activeTab, setActiveTab } = props;
+function TodoListTab({ activeTab, setActiveTab }) {
+  const tabName = ['全部', '待完成', '已完成'];
 
   return (
-    <ul className="todoList_tab">
-      {['全部', '待完成', '已完成'].map((item, i) => {
-        return (
-          <li key={i}>
-            <a
-              href="#"
-              type="button"
-              className={item === activeTab ? 'active' : ''}
-              onClick={() => {
-                setActiveTab(item);
-              }}
-            >
-              {item}
-            </a>
-          </li>
-        );
-      })}
-    </ul>
+    <div className="todoList_tab">
+      {tabName.map((item, i) => (
+        <div key={i}>
+          <a
+            href="#"
+            type="button"
+            className={item === activeTab ? 'active' : ''}
+            onClick={() => {
+              setActiveTab(item);
+            }}
+          >
+            {item}
+          </a>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TodoListStatistics({ length, text, setData }) {
+  function clearFinishedItem() {
+    setData(function (prev) {
+      return prev.filter((item) => item.finished === false);
+    });
+  }
+
+  return (
+    <div className="todoList_statistics">
+      <p>
+        {length} 個{text}項目
+      </p>
+      <a href="#" type="button" onClick={clearFinishedItem}>
+        清除已完成項目
+      </a>
+    </div>
+  );
+}
+
+function Card({ children }) {
+  return (
+    <div className="container todoListPage vhContainer">
+      <div className="todoList_Content">{children}</div>
+    </div>
+  );
+}
+
+function List({ data, setData }) {
+  const [activeTab, setActiveTab] = useState('全部');
+
+  function switchTab() {
+    if (activeTab === '全部') {
+      const statisticsNumber = data.filter(
+        (item) => item.finished === true
+      ).length;
+      return [data, statisticsNumber, '已完成'];
+    } else if (activeTab === '待完成') {
+      const showData = data.filter((item) => item.finished === false);
+      return [showData, showData.length, '待完成'];
+    } else if (activeTab === '已完成') {
+      const showData = data.filter((item) => item.finished === true);
+      return [showData, showData.length, '已完成'];
+    }
+  }
+
+  const [showData, statisticsNumber, text] = switchTab(activeTab);
+
+  return (
+    <div className="todoList_list">
+      <TodoListTab activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TodoListItems data={showData} setData={setData} />
+      <TodoListStatistics
+        length={statisticsNumber}
+        text={text}
+        setData={setData}
+      />
+    </div>
   );
 }
 
 function App() {
-  const [todo, setTodo] = useState([
+  const [data, setData] = useState([
     {
       id: v4(),
       content: '把冰箱發霉的檸檬拿去丟',
@@ -134,12 +205,6 @@ function App() {
     },
   ]);
 
-  const [activeTab, setActiveTab] = useState('全部');
-
-  const clearFinishedItem = () => {
-    setTodo([...todo].filter((item) => item.finished === false));
-  };
-
   return (
     <div id="todoListPage" className="bg-half">
       <nav>
@@ -147,34 +212,11 @@ function App() {
           <a href="#">ONLINE TODO LIST</a>
         </h1>
       </nav>
-      <div className="container todoListPage vhContainer">
-        <div className="todoList_Content">
-          <InputBox todo={todo} setTodo={setTodo} />
-          <div className="todoList_list">
-            <TodoListTab activeTab={activeTab} setActiveTab={setActiveTab} />
-            <div className="todoList_items">
-              <ul className="todoList_item">
-                <Items todo={todo} setTodo={setTodo} activeTab={activeTab} />
-              </ul>
-              <div className="todoList_statistics">
-                <p>
-                  {todo.filter((item) => item.finished === true).length}{' '}
-                  個已完成項目
-                </p>
-                <a
-                  href="#"
-                  type="button"
-                  onClick={() => {
-                    clearFinishedItem();
-                  }}
-                >
-                  清除已完成項目
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <Card>
+        <InputBox setData={setData} />
+        <List data={data} setData={setData}></List>
+      </Card>
     </div>
   );
 }
