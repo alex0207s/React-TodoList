@@ -6,6 +6,12 @@ span,
 applet,
 object,
 iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 p,
 blockquote,
 pre,
@@ -509,11 +515,12 @@ nav ul a span {
 }
 
 .todoList_list .todoList_items {
-  height: 50vh;
+  height: auto;
   max-height: 60vh;
   padding-top: 23px;
   padding-left: 24px;
   padding-right: 17px;
+  /* padding-bottom: 32px; */
   overflow: auto;
 }
 
@@ -624,19 +631,11 @@ div::-webkit-scrollbar-thumb:hover {
 /*# sourceMappingURL=all.css.map */
 
 .empty {
-  margin-top: 50px;
-}
+  position: absolute;
+  width: 240px;
+  height: 250.29px;
+  left: 394px;
+  top: 241px;
 
-.empty h3 {
-  display: flex;
-  justify-content: center;
-  font-family: 'Microsoft JhengHei';
-}
-
-.empty .image {
-  margin-top: 50px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: auto;
+  background: url(./img/empty.png);
 }

@@ -172,12 +172,7 @@ function List({ data, setData }) {
 }
 
 function Empty() {
-  return (
-    <div className="empty">
-      <h3>目前尚無待辦事項</h3>
-      <img className="image" src={require('./img/empty.png')} />
-    </div>
-  );
+  return <div className="empty"></div>;
 }
 
 function App() {
@@ -224,7 +219,8 @@ function App() {
 
       <Card>
         <InputBox setData={setData} />
-        {data.length === 0 ? <Empty /> : <List data={data} setData={setData} />}
+        {/* <List data={data} setData={setData}></List> */}
+        <Empty />
       </Card>
     </div>
   );
