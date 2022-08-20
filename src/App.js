@@ -158,9 +158,7 @@ function List({ data, setData }) {
       <TodoListTab activeTab={activeTab} setActiveTab={setActiveTab} />
       <TodoListItems data={showData} setData={setData} />
       <TodoListStatistics
-        statisticsNumber={
-          showData.filter((item) => item.finished === false).length
-        }
+        statisticsNumber={data.filter((item) => item.finished === false).length}
         setData={setData}
       />
     </div>
