@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { v4 } from 'uuid';
 import './App.css';
+import Login from './pages/login';
+import SignUp from './pages/signup';
 
 function Item({ id, content, finished, setData }) {
   function setFinished() {
@@ -210,7 +212,7 @@ function App() {
 
   return (
     <div id="todoListPage" className="bg-half">
-      <nav>
+      {/* <nav>
         <h1>
           <a href="#">ONLINE TODO LIST</a>
         </h1>
@@ -219,7 +221,9 @@ function App() {
       <Card>
         <InputBox setData={setData} />
         {data.length === 0 ? <Empty /> : <List data={data} setData={setData} />}
-      </Card>
+      </Card> */}
+      {/* <Login></Login> */}
+      <SignUp></SignUp>
     </div>
   );
 }

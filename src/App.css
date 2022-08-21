@@ -411,8 +411,11 @@ nav ul a span {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    margin: 48px auto 0 auto;
+    margin: 0 auto;
     padding: 48px 31px;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: start;
   }
 }
 .todoListPage {
