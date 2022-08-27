@@ -1,15 +1,14 @@
 import '../../App.css';
-import { useState } from 'react';
-import { v4 } from 'uuid';
 
 function Item({ id, content, finished, setData }) {
   function setFinished() {
     setData(function (prev) {
+      console.log('checkbox click');
       const targetIndex = prev.findIndex((x) => x.id == id);
 
       const updateTodo = [...prev];
       updateTodo[targetIndex].finished = !updateTodo[targetIndex].finished;
-
+      console.log(updateTodo);
       return updateTodo;
     });
   }

@@ -1,6 +1,4 @@
 import '../App.css';
-// import { useState } from 'react';
-// import { v4 } from 'uuid';
 import Card from './components/Card';
 import InputBox from './components/InputBox';
 import Empty from './components/Empty';

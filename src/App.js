@@ -1,6 +1,7 @@
 import './App.css';
-import { useState } from 'react';
 import { v4 } from 'uuid';
+import { useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import Home from './pages/home';
@@ -41,9 +42,11 @@ function App() {
 
   return (
     <div id="todoListPage" className="bg-half">
-      <Home data={data} setData={setData}></Home>
-      {/* <Login></Login> */}
-      {/* <SignUp></SignUp> */}
+      <Routes>
+        <Route path="/" element={<Home data={data} setData={setData} />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
+      </Routes>
     </div>
   );
 }
