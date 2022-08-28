@@ -1,14 +1,56 @@
 import '../App.css';
 import Side from './components/Side';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '../components/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 function SignUp() {
+  const { token, setToken } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => alert(JSON.stringify(data));
+  const onSubmit = (data) => {
+    const _url = 'https://todoo.5xcamp.us/users';
+    console.log({
+      user: data,
+    });
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    fetch(_url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: data,
+      }),
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 422) {
+          throw new Error('註冊失敗，電子信箱已被註冊！');
+        }
+        setToken(res.headers.get('authorization'));
+        return res.json();
+      })
+      .then((res) => {
+        navigate('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        return MySwal.fire({
+          title: err.message,
+        });
+      });
+  };
   const onError = (errors, e) => console.log(errors, e);
 
   return (
@@ -16,7 +58,10 @@ function SignUp() {
       <div className="container signUpPage vhContainer">
         <Side />
         <div>
-          <form className="formControls" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className="formControls"
+            onSubmit={handleSubmit(onSubmit, onError)}
+          >
             <h2 className="formControls_txt">註冊帳號</h2>
             <label className="formControls_label" htmlFor="email">
               Email
@@ -41,12 +86,12 @@ function SignUp() {
               className="formControls_input"
               type="text"
               placeholder="請輸入您的暱稱"
-              {...register('Name', {
+              {...register('name', {
                 required: { value: true, message: '此欄位必填寫' },
-                maxLength: { value: 100, message: '密稱至少為 100 個字元' },
+                maxLength: { value: 100, message: '暱稱最多為 100 個字元' },
               })}
             />
-            <span>{errors.Name?.message}</span>
+            <span>{errors.name?.message}</span>
             <label className="formControls_label" htmlFor="pwd">
               密碼
             </label>
@@ -67,9 +112,14 @@ function SignUp() {
               className="formControls_input"
               type="password"
               placeholder="請再次輸入密碼"
-              {...register('password', {
+              {...register('passwordConfirm', {
                 required: { value: true, message: '此欄位必填寫' },
                 minLength: { value: 8, message: '密碼至少為 8 碼' },
+                validate: (val) => {
+                  if (watch('password') !== val) {
+                    return '密碼不一致!';
+                  }
+                },
               })}
             />
             <span>{errors.password?.message}</span>

@@ -4,7 +4,7 @@ import Item from './Item';
 function TodoListItems({ data, setData }) {
   return (
     <div className="todoList_items">
-      {data.map((item) => (
+      {data?.map((item) => (
         <Item
           key={item.id}
           id={item.id}
