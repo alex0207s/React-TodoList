@@ -13,9 +13,9 @@ function App() {
     <div id="todoListPage" className="bg-half">
       <AuthContext.Provider value={{ token, setToken }}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<SignUp />} />
+          <Route path="/" element={<Home />} exact />
+          <Route path="login" element={<Login />} exact />
+          <Route path="signup" element={<SignUp />} exact />
         </Routes>
       </AuthContext.Provider>
     </div>

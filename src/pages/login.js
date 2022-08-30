@@ -8,7 +8,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
 function Login() {
-  const { token, setToken } = useAuth();
+  const { setToken } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -18,6 +18,7 @@ function Login() {
   const onSubmit = (data) => {
     const _url = 'https://todoo.5xcamp.us/users/sign_in';
     let myHeaders = new Headers();
+    let JWTToken = '';
     myHeaders.append('Content-Type', 'application/json');
     fetch(_url, {
       method: 'POST',
@@ -29,14 +30,14 @@ function Login() {
       }),
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 401) {
           throw new Error('登入失敗，請重新檢驗！');
         }
-        setToken(res.headers.get('authorization'));
+        JWTToken = res.headers.get('authorization');
         return res.json();
       })
       .then((res) => {
+        setToken({ token: JWTToken, name: res.nickname }); //
         navigate('/');
       })
       .catch((err) => {
@@ -92,9 +93,9 @@ function Login() {
               type="submit"
               value="登入"
             />
-            <a className="formControls_btnLink" href="#signUpPage">
+            <Link to="/signup" className={'formControls_btnLink'}>
               註冊帳號
-            </a>
+            </Link>
           </form>
         </div>
       </div>

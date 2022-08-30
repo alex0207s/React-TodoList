@@ -17,11 +17,10 @@ function SignUp() {
     watch,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data) => {
     const _url = 'https://todoo.5xcamp.us/users';
-    console.log({
-      user: data,
-    });
+
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     fetch(_url, {
@@ -51,6 +50,7 @@ function SignUp() {
         });
       });
   };
+
   const onError = (errors, e) => console.log(errors, e);
 
   return (
@@ -86,7 +86,7 @@ function SignUp() {
               className="formControls_input"
               type="text"
               placeholder="請輸入您的暱稱"
-              {...register('name', {
+              {...register('nickname', {
                 required: { value: true, message: '此欄位必填寫' },
                 maxLength: { value: 100, message: '暱稱最多為 100 個字元' },
               })}
@@ -117,7 +117,10 @@ function SignUp() {
                 minLength: { value: 8, message: '密碼至少為 8 碼' },
                 validate: (val) => {
                   if (watch('password') !== val) {
-                    return '密碼不一致!';
+                    MySwal.fire({
+                      title: '密碼不一致，請重新輸入!',
+                    });
+                    return '密碼不一致請，重新輸入!';
                   }
                 },
               })}
@@ -128,9 +131,9 @@ function SignUp() {
               type="submit"
               value="註冊帳號"
             />
-            <a className="formControls_btnLink" href="#loginPage">
+            <Link to="/login" className={'formControls_btnLink'}>
               登入
-            </a>
+            </Link>
           </form>
         </div>
       </div>

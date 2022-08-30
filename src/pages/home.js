@@ -16,7 +16,7 @@ function Home() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        authorization: token,
+        authorization: token.JWTToken,
       },
     })
       .then((res) => {
@@ -37,6 +37,16 @@ function Home() {
         <h1>
           <a href="#">ONLINE TODO LIST</a>
         </h1>
+        <ul>
+          <li className="todo_sm">
+            <a href="#">
+              <span>{token.name}</span>
+            </a>
+          </li>
+          <li>
+            <a href="#loginPage">登出</a>
+          </li>
+        </ul>
       </nav>
 
       <Card>
