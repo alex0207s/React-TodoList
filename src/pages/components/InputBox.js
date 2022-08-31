@@ -1,8 +1,9 @@
 import '../../App.js';
 import { useState } from 'react';
-import { v4 } from 'uuid';
+import { useAuth } from '../../components/AuthContext';
 
 function InputBox({ setData }) {
+  const { token } = useAuth();
   const [todo, setTodo] = useState('');
 
   const addTodo = () => {
@@ -11,9 +12,35 @@ function InputBox({ setData }) {
       return;
     }
 
-    setData(function (prev) {
-      return [...prev, { id: v4(), content: todo, finished: false }];
-    });
+    const _url = 'https://todoo.5xcamp.us/todos';
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    fetch(_url, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        authorization: token?.JWTToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        todo: { content: todo },
+      }),
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          throw new Error('新增代辦事項失敗！');
+        }
+        return res.json();
+      })
+      .then((res) => {
+        setData(function (prev) {
+          return [
+            ...prev,
+            { id: res.id, content: res.content, completed_at: null },
+          ];
+        });
+      });
 
     setTodo(() => {
       return '';

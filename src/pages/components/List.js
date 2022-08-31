@@ -11,10 +11,10 @@ function List({ data, setData }) {
     if (activeTab === '全部') {
       return data;
     } else if (activeTab === '待完成') {
-      const showData = data?.filter((item) => item.finished === false);
+      const showData = data?.filter((item) => item.completed_at === null);
       return showData;
     } else if (activeTab === '已完成') {
-      const showData = data?.filter((item) => item.finished === true);
+      const showData = data?.filter((item) => item.completed_at !== null);
       return showData;
     }
   }
@@ -27,7 +27,7 @@ function List({ data, setData }) {
       <TodoListItems data={showData} setData={setData} />
       <TodoListStatistics
         statisticsNumber={
-          data?.filter((item) => item.finished === false).length
+          data?.filter((item) => item.completed_at === null).length
         }
         setData={setData}
       />

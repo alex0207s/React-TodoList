@@ -1,22 +1,59 @@
 import '../../App.css';
+import { useAuth } from '../../components/AuthContext';
 
-function Item({ id, content, finished, setData }) {
+function Item({ id, content, completed_at, setData }) {
+  const { token } = useAuth();
+
   function setFinished() {
-    setData(function (prev) {
-      console.log('checkbox click');
-      const targetIndex = prev.findIndex((x) => x.id == id);
+    const _url = 'https://todoo.5xcamp.us/todos/' + id + '/toggle';
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
 
-      const updateTodo = [...prev];
-      updateTodo[targetIndex].finished = !updateTodo[targetIndex].finished;
-      console.log(updateTodo);
-      return updateTodo;
-    });
+    fetch(_url, {
+      method: 'PATCH',
+      headers: {
+        accept: 'application/json',
+        authorization: token?.JWTToken,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          throw new Error('執行未授權的操作');
+        }
+
+        return res.json();
+      })
+      .then((res) => {
+        setData(function (prev) {
+          const targetIndex = prev.findIndex((x) => x.id == res.id);
+
+          const updateTodo = [...prev];
+
+          if (updateTodo[targetIndex].completed_at !== null)
+            updateTodo[targetIndex].completed_at = null;
+          else updateTodo[targetIndex].completed_at = res.completed_at;
+          return updateTodo;
+        });
+        return res;
+      });
   }
 
   function deleteItem() {
-    // submittingStatus.current = true
-    setData(function (prev) {
-      return prev.filter((item) => item.id !== id);
+    const _url = 'https://todoo.5xcamp.us/todos/' + id;
+
+    fetch(_url, {
+      method: 'DELETE',
+      headers: {
+        accept: 'application/json',
+        authorization: token?.JWTToken,
+      },
+    }).then((res) => {
+      if (res.status === 401) throw new Error('執行未授權的操作');
+
+      setData(function (prev) {
+        return prev.filter((item) => item.id !== id);
+      });
+      return res.json();
     });
   }
 
@@ -26,7 +63,7 @@ function Item({ id, content, finished, setData }) {
         <input
           className="todoList_input"
           type="checkbox"
-          checked={finished}
+          checked={completed_at === null ? false : true}
           onChange={setFinished}
         />
         <span>{content}</span>

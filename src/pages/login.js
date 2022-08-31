@@ -37,7 +37,7 @@ function Login() {
         return res.json();
       })
       .then((res) => {
-        setToken({ token: JWTToken, name: res.nickname }); //
+        setToken({ JWTToken: JWTToken, name: res.nickname }); //
         navigate('/');
       })
       .catch((err) => {

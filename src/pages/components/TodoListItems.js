@@ -9,7 +9,7 @@ function TodoListItems({ data, setData }) {
           key={item.id}
           id={item.id}
           content={item.content}
-          finished={item.finished}
+          completed_at={item.completed_at}
           setData={setData}
         />
       ))}
