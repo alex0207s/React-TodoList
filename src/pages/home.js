@@ -8,7 +8,7 @@ import Empty from './components/Empty';
 import List from './components/List';
 
 function Home() {
-  const { token } = useAuth();
+  const { token, setToken } = useAuth();
   const [data, setData] = useState([]);
 
   const getTodo = () => {
@@ -42,14 +42,16 @@ function Home() {
         throw new Error('登出失敗！');
       }
       console.log('登出成功!');
-      return res.json();
+      localStorage.clear();
     });
   }
 
   useEffect(() => {
-    console.log('useEffect is invoked!');
-    getTodo();
-  }, []);
+    const JWTToken = localStorage.getItem('token');
+    const nickname = localStorage.getItem('nickname');
+    if (token === null) setToken({ JWTToken: JWTToken, name: nickname });
+    else getTodo();
+  }, [token]);
 
   return (
     <>
@@ -67,7 +69,6 @@ function Home() {
             <Link to="/login" onClick={logout}>
               登出
             </Link>
-            {/* <a href="#loginPage">登出</a> */}
           </li>
         </ul>
       </nav>

@@ -15,8 +15,6 @@ function TodoListStatistics({ statisticsNumber, setData }) {
       },
     }).then((res) => {
       if (res.status === 401) throw new Error('執行未授權的操作');
-
-      return res.json();
     });
   }
 
@@ -25,6 +23,7 @@ function TodoListStatistics({ statisticsNumber, setData }) {
       prev.forEach(function (item) {
         if (item.completed_at !== null) deleteItem(item.id);
       });
+
       return prev.filter((item) => item.completed_at === null);
     });
   }

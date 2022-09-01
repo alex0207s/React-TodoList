@@ -1,6 +1,6 @@
 import './App.css';
 import { useState } from 'react';
-import { Routes, Route, Out } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AuthContext } from './components/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Login from './pages/login';

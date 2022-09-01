@@ -6,8 +6,6 @@ function Item({ id, content, completed_at, setData }) {
 
   function setFinished() {
     const _url = 'https://todoo.5xcamp.us/todos/' + id + '/toggle';
-    let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
 
     fetch(_url, {
       method: 'PATCH',
@@ -32,6 +30,7 @@ function Item({ id, content, completed_at, setData }) {
           if (updateTodo[targetIndex].completed_at !== null)
             updateTodo[targetIndex].completed_at = null;
           else updateTodo[targetIndex].completed_at = res.completed_at;
+          console.log(updateTodo);
           return updateTodo;
         });
         return res;
@@ -53,7 +52,6 @@ function Item({ id, content, completed_at, setData }) {
       setData(function (prev) {
         return prev.filter((item) => item.id !== id);
       });
-      return res.json();
     });
   }
 

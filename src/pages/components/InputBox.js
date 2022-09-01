@@ -1,6 +1,9 @@
 import '../../App.js';
 import { useState } from 'react';
 import { useAuth } from '../../components/AuthContext';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 function InputBox({ setData }) {
   const { token } = useAuth();
@@ -8,13 +11,14 @@ function InputBox({ setData }) {
 
   const addTodo = () => {
     if (todo === '') {
-      alert('請輸入待辦事項!');
-      return;
+      return MySwal.fire({
+        title: '請先輸入代辦事項!',
+      });
     }
 
     const _url = 'https://todoo.5xcamp.us/todos';
-    let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
+    // let myHeaders = new Headers();
+    // myHeaders.append('Content-Type', 'application/json');
 
     fetch(_url, {
       method: 'POST',

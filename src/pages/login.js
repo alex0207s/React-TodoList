@@ -15,11 +15,11 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data) => {
-    const _url = 'https://todoo.5xcamp.us/users/sign_in';
-    let myHeaders = new Headers();
     let JWTToken = '';
-    myHeaders.append('Content-Type', 'application/json');
+    const _url = 'https://todoo.5xcamp.us/users/sign_in';
+
     fetch(_url, {
       method: 'POST',
       headers: {
@@ -37,7 +37,9 @@ function Login() {
         return res.json();
       })
       .then((res) => {
-        setToken({ JWTToken: JWTToken, name: res.nickname }); //
+        setToken({ JWTToken: JWTToken, name: res.nickname });
+        localStorage.setItem('token', JWTToken);
+        localStorage.setItem('nickname', res.nickname);
         navigate('/');
       })
       .catch((err) => {
