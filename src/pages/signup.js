@@ -9,7 +9,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
 function SignUp() {
-  const { token, setToken } = useAuth();
+  const { setToken } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -35,7 +35,7 @@ function SignUp() {
       .then((res) => {
         console.log(res);
         if (res.status === 422) {
-          throw new Error('註冊失敗，電子信箱已被註冊！');
+          throw new Error('註冊失敗\nEmail 已被註冊或密碼不足六碼！');
         }
         setToken(res.headers.get('authorization'));
         return res.json();
@@ -101,7 +101,6 @@ function SignUp() {
               placeholder="請輸入密碼"
               {...register('password', {
                 required: { value: true, message: '此欄位必填寫' },
-                minLength: { value: 8, message: '密碼至少為 8 碼' },
               })}
             />
             <span>{errors.password?.message}</span>
@@ -114,7 +113,6 @@ function SignUp() {
               placeholder="請再次輸入密碼"
               {...register('passwordConfirm', {
                 required: { value: true, message: '此欄位必填寫' },
-                minLength: { value: 8, message: '密碼至少為 8 碼' },
                 validate: (val) => {
                   if (watch('password') !== val) {
                     MySwal.fire({

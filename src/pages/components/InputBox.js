@@ -14,11 +14,14 @@ function InputBox({ setData }) {
       return MySwal.fire({
         title: '請先輸入代辦事項!',
       });
+    } else if (todo.trim() === '') {
+      return MySwal.fire({
+        title: '代辦事項有誤!',
+        text: '請勿輸入全空白的文字',
+      });
     }
 
     const _url = 'https://todoo.5xcamp.us/todos';
-    // let myHeaders = new Headers();
-    // myHeaders.append('Content-Type', 'application/json');
 
     fetch(_url, {
       method: 'POST',

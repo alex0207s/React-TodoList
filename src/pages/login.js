@@ -86,7 +86,6 @@ function Login() {
               placeholder="請輸入密碼"
               {...register('password', {
                 required: { value: true, message: '此欄位必填寫' },
-                minLength: { value: 8, message: '密碼至少為 8 碼' },
               })}
             />
             <span>{errors.password?.message}</span>
